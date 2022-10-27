@@ -8,3 +8,6 @@ Our project will allow students to login and store their courses, and then submi
 
 VISION STATEMENT
 For students, Who want to calculate their GPA's and store said information for later ease of access. The "Exploding Unit's GPA Calculator" is a GPA Calculator that calculates your GPA and stores relevant classes and scores for ease access. Unlike "https://gpacalculator.net/college-gpa-calculator/" , our product does not requires users to re-input their information when reloading the page subsequently storing their scores and courses into a database.
+
+
+PRINT OPTION TO PRINT GRADES AND SCORES
