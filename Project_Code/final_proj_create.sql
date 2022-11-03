@@ -11,6 +11,7 @@ CREATE TABLE students(
 
 DROP TABLE IF EXISTS courses CASCADE;
 CREATE TABLE courses(
+    course_prefix VARCHAR(100) PRIMARY KEY,
     course_id NUMERIC PRIMARY KEY,
     course_name VARCHAR(100) NOT NULL,
     credit_hours NUMERIC NOT NULL
