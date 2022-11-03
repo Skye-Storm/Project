@@ -1,26 +1,31 @@
 <header>
- <nav class="navbar navbar-expand-sm border-bottom">
-   <div class="container">
-     <button
-       class="navbar-toggler ms-auto"
-       type="button"
-       data-bs-toggle="collapse"
-       data-bs-target="#navbar-collapse"
-       aria-controls="navbar"
-       aria-expanded="false"
-       aria-label="Toggle navigation">
-       <span class="navbar-toggler-icon"></span>
-     </button>
-     <div class="collapse navbar-collapse" id="navbar-collapse">
-       <ul class="navbar-nav me-auto">
-         <li class="nav-item">
-           <a class ="nav-link" href="/discover">Discover</a>
-         </li>
-       </ul>
-       <div class="nav-item me-1">
-         <a class ="nav-link" href="/logout">Logout</a>
-       </div>
-     </div>
-   </div>
- </nav>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/"></a>
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class ="nav-link" href="/">Home</a>
+      </li>
+      <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Courses
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/courses?taken=true">My Courses</a></li>
+            <li><a class="dropdown-item" href="/courses">Add Courses</a></li>
+          </ul>
+        </li>
+      <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            GPA
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/current_gpa">Current GPA</a></li>
+            <li><a class="dropdown-item" href="/projected_gpa">Projected GPA</a></li>
+          </ul>
+        </li>
+      <li class="nav-item">
+        <a class ="nav-link" href="/logout">Logout</a>
+      </li>
+    </ul>
+  </nav>
 </header>

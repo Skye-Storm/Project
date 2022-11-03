@@ -53,7 +53,7 @@ app.get('/', (req, res) =>{
 });
 
 app.get('/login', (req, res) =>{
-  res.render(pages/login'); //this will call the /home route in the API
+  res.render('pages/login'); //this will call the /home route in the API
 });
 
 // Login submission
