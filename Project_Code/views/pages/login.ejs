@@ -1,0 +1,15 @@
+<%- include ('../partials/header') %>
+<%- include ('../partials/menu') %>
+
+<main>
+  <div class="container">
+    <form action="/login" method="POST">
+      <input type="username" id="username" name="username" placeholder="username">
+      <input type="password" id="password" name="password" placeholder="password">
+      <input type="submit" value="Submit">
+    </form>
+    Not registered? <a href="/register">Register here.</a>
+  </div>
+</main>
+
+<%- include ('../partials/footer') %>
