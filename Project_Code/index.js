@@ -74,7 +74,7 @@ app.post('/login', async (req, res) =>{
        };
          req.session.save();
        }
-         res.redirect("/discover");
+         res.redirect("/logged_in");
        })
          .catch((err) => {
          console.log(err);
