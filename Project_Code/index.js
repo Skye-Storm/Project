@@ -103,6 +103,57 @@ db.any (query, [user, hash])
     });
 });
 
+app.get('/current_gpa', (req, res) =>{ // when "current GPA" selected from menu, renders this page
+  res.render('pages/current_gpa'); 
+});
+
+app.post('/current_gpa', (req, res) =>{
+  var letter_grade = req.body.letter_grade;
+  const query = "INSERT INTO student_courses (grade_complete) VALUES ($1)";
+  if(letter_grade = "A")
+  {    db.any (query, [4.0])    .catch((err) =>{  console.log(err);   res.redirect("current_gpa");})  }
+
+  if(letter_grade = "A-")
+  {    db.any (query, [3.7])    .catch((err) =>{  console.log(err);   res.redirect("current_gpa");})  }
+
+  if(letter_grade = "B+")
+  {    db.any (query, [3.3])    .catch((err) =>{  console.log(err);   res.redirect("current_gpa");})  }
+
+  if(letter_grade = "B")
+  {    db.any (query, [3.0])    .catch((err) =>{  console.log(err);   res.redirect("current_gpa");})  }
+
+  if(letter_grade = "B-")
+  {    db.any (query, [2.7])    .catch((err) =>{  console.log(err);   res.redirect("current_gpa");})  }
+
+  if(letter_grade = "C+")
+  {    db.any (query, [2.3])    .catch((err) =>{  console.log(err);   res.redirect("current_gpa");})  }
+
+  if(letter_grade = "C")
+  {    db.any (query, [2.0])    .catch((err) =>{  console.log(err);   res.redirect("current_gpa");})  }
+
+  if(letter_grade = "C-")
+  {    db.any (query, [1.7])    .catch((err) =>{  console.log(err);   res.redirect("current_gpa");})  }
+
+  if(letter_grade = "D+")
+  {    db.any (query, [1.3])    .catch((err) =>{  console.log(err);   res.redirect("current_gpa");})  }
+
+  if(letter_grade = "D")
+  {    db.any (query, [1.0])    .catch((err) =>{  console.log(err);   res.redirect("current_gpa");})  }
+
+  if(letter_grade = "D-")
+  {    db.any (query, [0.7])    .catch((err) =>{  console.log(err);   res.redirect("current_gpa");})  }
+
+  if(letter_grade = "F")
+  {    db.any (query, [0.0])    .catch((err) =>{  console.log(err);   res.redirect("current_gpa");})  }
+  else
+  {
+    // rerender page with error message.
+  }
+
+  res.render //render the page again
+})
+
+
 app.get("/logout", (req, res) => {
   req.session.destroy();
   res.render("pages/login");
