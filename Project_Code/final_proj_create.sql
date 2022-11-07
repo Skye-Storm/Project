@@ -23,3 +23,7 @@ CREATE TABLE student_courses(
     student_id INTEGER NOT NULL REFERENCES students (student_id)
 );
 
+CREATE TABLE users(
+    username VARCHAR(50) PRIMARY KEY,
+    password CHAR(60) NOT NULL
+);
