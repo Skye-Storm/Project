@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS students CASCADE;
 CREATE TABLE students(
     student_id SERIAL PRIMARY KEY,
     first_name VARCHAR(50) NOT NULL,
-    last_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL
     --email VARCHAR(200) NOT NULL,
     --year VARCHAR(15) NOT NULL,
     --major VARCHAR(30) NOT NULL,
@@ -11,7 +11,7 @@ CREATE TABLE students(
 
 DROP TABLE IF EXISTS courses CASCADE;
 CREATE TABLE courses(
-    course_prefix VARCHAR(100) PRIMARY KEY,
+    course_prefix VARCHAR(100) NOT NULL,
     course_id NUMERIC PRIMARY KEY,
     course_name VARCHAR(100) NOT NULL,
     credit_hours NUMERIC NOT NULL
