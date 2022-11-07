@@ -20,6 +20,7 @@ CREATE TABLE courses(
 DROP TABLE IF EXISTS student_courses;
 CREATE TABLE student_courses(
     course_id INTEGER NOT NULL REFERENCES courses (course_id),
-    student_id INTEGER NOT NULL REFERENCES students (student_id)
-);
+    student_id INTEGER NOT NULL REFERENCES students (student_id),
+    grade_complete DECIMAL(2, 1) NOT NULL
+    );
 
