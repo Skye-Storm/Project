@@ -68,6 +68,7 @@ app.post('/login', async (req, res) =>{
        const match = await bcrypt.compare(req.body.password, data.password);         
        if (match != 1){
          //Incorrect Password here;
+         res.redirect('/wrongpass');
        } else {
          req.session.user = {
          api_key: process.env.API_KEY,
