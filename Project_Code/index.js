@@ -104,13 +104,28 @@ db.any (query, [user, hash])
 });
 
 app.get('/current_gpa', (req, res) =>{ // when "current GPA" selected from menu, renders this page
-  res.render('pages/current_gpa'); 
+  // const course_list = "SELECT * FROM courses INNER JOIN student_courses ON student_courses.course_id = courses.course_id INNER JOIN students ON students.student_id = student_courses.student_id GROUP BY courses.course_id;";
+  const course_list = "SELECT * FROM courses"
+  db.any(course_list)
+  .then(data => {
+    console.log("Success", data)
+    res.render('pages/current_gpa', {courses: data }); 
+  })
+  .catch(err =>{
+      console.log("Error", err)
+      res.render('pages/current_gpa', {courses: " "})
+    }
+  )
+  
 });
 
 app.post('/current_gpa', (req, res) =>{
-  var letter_grade = req.body.letter_grade;
-  const query = "INSERT INTO student_courses (grade_complete) VALUES ($1)";
-  if(letter_grade = "A")
+
+  const letter_grade = req.body.letter_grade; // form must have letter_grade
+  const course = req.body.course;
+  console.log(letter_grade, course)
+  const query = "INSERT INTO student_courses (grade_complete) VALUES ($1)"; // based upon the letter_grade inserted, the db inserts into that specific course
+  if(letter_grade === "A")
   {    db.any (query, [4.0])    .catch((err) =>{  console.log(err);   res.redirect("current_gpa");})  }
 
   if(letter_grade = "A-")
@@ -147,10 +162,9 @@ app.post('/current_gpa', (req, res) =>{
   {    db.any (query, [0.0])    .catch((err) =>{  console.log(err);   res.redirect("current_gpa");})  }
   else
   {
-    // rerender page with error message.
+    res.render('pages/current_gpa'); //add error message about improper letter choice
   }
-
-  res.render //render the page again
+  res.render('pages/current_gpa', {courses: ""}); 
 })
 
 
