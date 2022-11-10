@@ -3,6 +3,13 @@
 
 <main>
   <div class="container">
+    <% if (locals.message) { %>
+      <div
+        class="alert alert-<%- locals.error ? 'danger' : 'success' %>"
+  	role="alert">
+        <%= message %>
+      </div>
+    <% } %>
     <br>
     <form action="/login" method="POST">
       <div class="form-group">
