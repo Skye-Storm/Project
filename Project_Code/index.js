@@ -108,7 +108,9 @@ db.any (query, [user, hash])
    })
    .catch((err) => {
       console.log(err);
-      res.redirect("/register");
+      res.render("pages/register", {
+	error: 'Username exists',
+	message: `Username already exists, please try another one`,});
     });
 });
 
@@ -219,5 +221,7 @@ app.post('/current_gpa', (req, res) =>{
 
 app.get("/logout", (req, res) => {
   req.session.destroy();
-  res.redirect("/login");
+  res.render('pages/login', {
+	message: `Successfully logged out!`,
+      });
 });
