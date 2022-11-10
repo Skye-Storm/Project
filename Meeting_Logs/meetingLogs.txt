@@ -22,4 +22,5 @@ FOR THE WEEK
 
 Each Person
 Fitz: worked on creating a database of all engineering courses, and worked on creating the projected GPA page. For the next week, I will finish up the projected GPA page and possibly move to print PDF functionality.
+Trevor: Logout button complete, worked on register and login API. Register is complete and working. Login has a bug when entering in a known user with the wrong password. For the next week I will be working on fixing that bug (And any others that come up with logging in/registering) and I will be helping with linking classes to users.
 Need to adhere to the rubric!!
