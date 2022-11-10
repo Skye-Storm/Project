@@ -84,6 +84,7 @@ app.post('/login', async (req, res) =>{
   else {
     res.render('pages/login', {
       error: 'Invalid username or password',
+      message: `Wrong password, please try again`,
     });
   }
 

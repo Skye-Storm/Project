@@ -19,7 +19,7 @@ CREATE TABLE user_courses(
     course_id INTEGER NOT NULL,
     course_prefix VARCHAR(4) NOT NULL,
     username VARCHAR(50) NOT NULL,
-    grade_complete DECIMAL(2, 1) NOT NULL,
+    grade_complete DECIMAL(2, 1),
 
     FOREIGN KEY (course_id, course_prefix) REFERENCES courses (course_id, course_prefix),
     FOREIGN KEY (username) REFERENCES users (username)
