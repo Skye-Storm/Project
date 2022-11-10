@@ -4,7 +4,6 @@ const pgp = require('pg-promise')();
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
-const axios = require('axios');
 
 // database configuration
 const dbConfig = {
@@ -28,14 +27,13 @@ db.connect()
   });
 
 app.set('view engine', 'ejs');
-
 app.use(bodyParser.json());
 
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
-    saveUninitialized: false,
-    resave: false,
+    saveUninitialized: true,
+    resave: true,
   })
 );
 
@@ -45,49 +43,57 @@ app.use(
   })
 );
 
+const user = {
+  username: undefined
+};
+
 app.listen(3000);
 console.log('Server is listening on port 3000');
 
 app.get('/', (req, res) =>{
-  res.redirect('/login'); //this will call the /home route in the API
+  res.redirect('/login'); 
 });
 
 app.get('/login', (req, res) =>{
-  res.render('pages/login'); //this will call the /home route in the API
+  if (req.session.user) {
+    return res.redirect("/courses");
+  } else {
+    res.render('pages/login'); 
+  }
 });
 
 // Login submission
 app.post('/login', async (req, res) =>{
-  const user = req.body.username;
-  const query = "SELECT * FROM users WHERE username = $1";
-  const values = [user];
-  db.one(query, values)
-    .then(async (data) => {
-       user.username = data.username;
-       user.password = data.password;
-       const match = await bcrypt.compare(req.body.password, data.password);         
-       if (match != 1){
-         //Incorrect Password here;
-         res.redirect('/wrongpass');
-       } else {
-         req.session.user = {
-         api_key: process.env.API_KEY,
-       };
-         req.session.save();
-       }
-         res.redirect("/logged_in");
-       })
-         .catch((err) => {
-         console.log(err);
-         res.redirect("/register");
-       });
+  const username = req.body.username;
+  const query = "SELECT * FROM users WHERE users.username = $1";
+  const values = [username];
+  
+  // check that user entered valid username password
+  const user = await db.oneOrNone(query, values);
+  if (user) {
+    const valid = await bcrypt.compare(req.body.password, user.password);
+    if (valid) {
+      req.session.user = user;
+      res.redirect('/courses');
+    } else {
+      res.render('pages/login', {
+        error: 'Invalid username or password',
+      });
+    }
+  }
+  else {
+    res.render('pages/login', {
+      error: 'Invalid username or password',
+    });
+  }
+
 });
 
+// Registration
 app.get('/register', (req, res) => {
   res.render('pages/register',{});
 });
 
-// Register submission
 app.post('/register', async (req, res) => {
 const user = req.body.username;
 const hash = await bcrypt.hash(req.body.password, 10);
@@ -96,7 +102,7 @@ db.any (query, [user, hash])
   .then((data) => {
      user.username = data.user;
      hash.password = data.password;
-     res.redirect("/");
+     res.redirect("/login");
    })
    .catch((err) => {
       console.log(err);
@@ -104,7 +110,47 @@ db.any (query, [user, hash])
     });
 });
 
+// Authentication middleware.
+const auth = (req, res, next) => {
+  if (!req.session.user) {
+    return res.redirect("/login");
+  }
+  next();
+};
+
+app.use(auth);
+
+// Courses Page Stuff
+app.get("/", (req, res) => {
+  res.render("pages/courses", {
+    username: req.session.user.username,
+  });
+});
+
+app.get("/courses", (req, res) => {
+  // get courses that are taken from the courses table using the user_courses table 
+  // use course_id and course_prefix to get the course name from the courses table
+  const taken_courses = "SELECT * FROM courses WHERE (course_id, course_prefix) IN (SELECT course_id, course_prefix FROM user_courses WHERE username = $1);";
+  const all_courses = "SELECT * FROM courses";
+
+  db.any(taken_courses, [req.session.user.username])
+    .then((courses) => {
+      console.log(courses);
+      res.render("pages/courses", {
+        courses,
+        username: req.session.user.username,
+      });
+    })
+    .catch((err) => {
+      res.render("pages/login", {
+        error: true,
+        message: err.message,
+      });
+      console.log(err);
+    });
+});
+
 app.get("/logout", (req, res) => {
   req.session.destroy();
-  res.render("pages/login");
+  res.redirect("/login");
 });
