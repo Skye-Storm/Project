@@ -361,7 +361,6 @@ INSERT INTO courses (course_prefix, course_id, course_name, credit_hours) VALUES
 ('CHEN', 5836, 'Nanomaterials', 3),
 ('CHEN', 5900, 'Pharmaceutical Biotechnology', 3),
 ('CHEN', 6210, 'Microhydrodynamics of Suspensions and Colloids', 3),
-('CHEN', 1201, 'Biochemical Engineering Fundamentals', 3),
 
 ('CHEM', 1011, 'Environmental Chemistry 1', 3),
 ('CHEM', 1021, 'Introductory Chemistry', 4),
@@ -728,7 +727,6 @@ INSERT INTO courses (course_prefix, course_id, course_name, credit_hours) VALUES
 ('ECEN', 5682, 'Theory and Practice of Error Control Codes', 3),
 ('ECEN', 5692, 'Principles of Digital Communication', 3),
 ('ECEN', 5696, 'Fourier Optics', 3),
-('ECEN', 5612, 'Machine Learning for Engineers', 3),
 ('ECEN', 5713, 'Advanced Embedded Software Development', 3),
 ('ECEN', 5720, 'Practical Printed Circuit Board Design Accelerator', 1),
 ('ECEN', 5730, 'Practical Printed Circuit Board Design and Manufacture', 3),
