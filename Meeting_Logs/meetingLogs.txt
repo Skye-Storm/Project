@@ -1,0 +1,25 @@
+11/3/22 Meeting – 9:00-9:20 AM
+Showing project board and what we have so far
+Need scribe, one person sharing screen
+	Explain what we have done so far and where we plan to go in the next week
+Stick to plan outlined in project guide!
+Have everything done by week 3!! Need a week to test
+Every week EACH PERSON has to COMMIT 3 TIMES
+Each person must make branch for themselves – DON’T COMMIT TO MAIN ANYMORE
+Go thru your own branch and merge to main once code is approved
+Need some sort of deliverable completed each week
+Need release notes each week and update on README, as well as more documentation on any new code, update meeting minutes
+SCORE EACH WEEK FOR ATTENDANCE
+
+11/10/22
+Need to have release notes each week
+Need to update the user stories descriptions and continue to create more stories
+Each week, say what you have done and what you still need to do
+Each name has what you have done, what you will do, and the number of commits you have
+None of user stories have descriptions, NEED TO UPDATE
+NEED TO CREATE RELEASE NOTES
+FOR THE WEEK
+
+Each Person
+Fitz: worked on creating a database of all engineering courses, and worked on creating the projected GPA page. For the next week, I will finish up the projected GPA page and possibly move to print PDF functionality.
+Need to adhere to the rubric!!
