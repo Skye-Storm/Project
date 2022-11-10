@@ -1,0 +1,128 @@
+<%- include ('../partials/header') %>
+<%- include ('../partials/menu') %>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Style the header */
+header {
+  padding: 30px;
+  text-align: center;
+}
+
+/* Container for flexboxes */
+section {
+  display: -webkit-flex;
+  display: flex;
+}
+
+/* Style the navigation menu */
+nav {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  background: #ccc;
+  padding: 20px;
+}
+
+/* Style the list inside the menu */
+nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+/* Style the content */
+table {
+  -webkit-flex: 3;
+  -ms-flex: 3;
+  flex: 3;
+  padding: 10px;
+}
+
+/* Style the footer */
+footer {
+  padding: 10px;
+  text-align: center;
+}
+
+/* Responsive layout - makes the menu and the content (inside the section) sit on top of each other instead of next to each other */
+@media (max-width: 600px) {
+  section {
+    -webkit-flex-direction: column;
+    flex-direction: column;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h3>Current GPA : (GPA)</h3>
+</header>
+
+<section>
+  <nav>
+    <ul>
+    <form action="/current_gpa" method="POST">
+            
+            <div class="form-group col-md-4">
+                <label for="course">Course Name</label>
+                <select id="course" name = "course" class="form-control">
+                  <option selected>Default</option>
+                  <% if(courses){ %>
+                  <% courses.forEach(course => { %>
+                    <option> <%= course.course_name %></option>
+                  <% }) %>
+                  <% } %>
+                </select>
+              </div> 
+        <div class="form-group col-md-4">
+            <label for="letter_grade">Letter Grade</label>
+            <select id="letter_grade" name = "letter_grade" class="form-control">
+              <option selected>NULL</option>   
+              <option>A</option>    <option>A-</option>   <option>B+</option>   <option>B</option>
+              <option>B-</option>   <option>C+</option>   <option>C</option>    <option>C-</option>
+              <option>D+</option>   <option>D</option>    <option>D-</option>   <option>F</option>
+            </select>
+          </div>
+          <div>
+            <button type="submit">Submit</button>
+          </div>
+        </form>
+    </ul>
+  </nav>
+  
+  <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Course Name</th>
+          <th scope="col">Credit Hours</th>
+          <th scope="col">Letter Grade</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(let i = 0; i < courses.length; i++){%>
+        <tr>
+          <td scope ="col"> <%= courses[i].course_name %></td> 
+          <td scope ="col"><%= courses[i].credit_hours %></td> 
+          <td scope ="col"><%= courses[i].grade_complete %></td>
+        </tr>
+        <% } %>
+      </tbody>
+
+</section>
+
+
+
+</body>
+</html>
+
+
+
+<%- include ('../partials/footer') %>
