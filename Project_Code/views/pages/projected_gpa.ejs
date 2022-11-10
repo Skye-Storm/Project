@@ -1,0 +1,114 @@
+<%- include ('../partials/header') %>
+<%- include ('../partials/menu') %>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+/* Style the header */
+header {
+  padding: 30px;
+  text-align: center;
+}
+/* Container for flexboxes */
+section {
+  display: -webkit-flex;
+  display: flex;
+}
+/* Style the navigation menu */
+nav {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  background: #ccc;
+  padding: 20px;
+}
+/* Style the list inside the menu */
+nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+/* Style the content */
+table {
+  -webkit-flex: 3;
+  -ms-flex: 3;
+  flex: 3;
+  padding: 10px;
+}
+/* Style the footer */
+footer {
+  padding: 10px;
+  text-align: center;
+}
+/* Responsive layout - makes the menu and the content (inside the section) sit on top of each other instead of next to each other */
+@media (max-width: 600px) {
+  section {
+    -webkit-flex-direction: column;
+    flex-direction: column;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h3>Projected GPA : (GPA)</h3>
+</header>
+
+<section>
+  <nav>
+    <ul>
+    <form action="/projected_gpa" method="GET">
+            
+            <div class="form-group col-md-4">
+                <label for="course">Course Name</label>
+                <select id="course" class="form-control">
+                  <option selected></option>
+                </select>
+              </div>
+            </form>
+	<form action="/projected_gpa" method="POST">    
+        <div class="form-group col-md-4">
+            <label for="letter_grade">Letter Grade</label>
+            <select id="letter_grade" class="form-control">
+              <option selected>NULL</option>   
+              <option>A</option>    <option>A-</option>   <option>B+</option>   <option>B</option>
+              <option>B-</option>   <option>C+</option>   <option>C</option>    <option>C-</option>
+              <option>D+</option>   <option>D</option>    <option>D-</option>   <option>F</option>
+            </select>
+          </div>
+        </form>
+    </ul>
+  </nav>
+  
+  <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Course Name</th>
+          <th scope="col">Credit Hours</th>
+          <th scope="col">Letter Grade</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(let i = 0; i < 21; i++){%>
+        <tr>
+          <td scope ="col">// name \\ </td> 
+          <td scope ="col">// hours \\</td> 
+          <td scope ="col"> // GRADE \\</td>
+        </tr>
+        <% } %>
+      </tbody>
+
+</section>
+
+
+
+</body>
+</html>
+
+
+
+<%- include ('../partials/footer') %>
