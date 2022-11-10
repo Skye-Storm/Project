@@ -603,7 +603,7 @@ INSERT INTO courses (course_prefix, course_id, course_name, credit_hours) VALUES
 ('ECEN', 2450, 'Electronic and Semiconductor Device Laboratory', 3),
 ('ECEN', 2703, 'Discrete Mathematics for Computer Engineers', 3),
 ('ECEN', 3010, 'Circuits and Electronics for Mechanical Engineers', 3),
-('ECEN', 3070, 'Edges of Science', 3),
+('ECEN', 3090, 'Electro', 3),
 ('ECEN', 3170, 'Electromagnetic Energy Conversion 1', 3),
 ('ECEN', 3210, 'Hype and Reality in Energy Technologies', 3),
 ('ECEN', 3250, 'Microelectronics', 3),
