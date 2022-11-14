@@ -124,34 +124,69 @@ const auth = (req, res, next) => {
 
 app.use(auth);
 
-// Courses Page Stuff
-app.get("/", (req, res) => {
-  res.render("pages/courses", {
-    username: req.session.user.username,
-  });
-});
+const user_courses = `
+  SELECT DISTINCT
+    courses.course_id,
+    courses.course_prefix,
+    courses.course_name,
+    courses.credit_hours,
+    users.username = $1 AS "taken"
+  FROM
+    courses
+    JOIN user_courses ON courses.course_id = user_courses.course_id
+    JOIN users ON user_courses.username = users.username
+  WHERE users.username = $1
+  ORDER BY courses.course_id ASC;`;
 
-app.get("/courses", (req, res) => {
-  // get courses that are taken from the courses table using the user_courses table 
-  // use course_id and course_prefix to get the course name from the courses table
 
-  db.any(taken_courses, [req.session.user.username])
+app.post("/courses", (req, res) => {
+  const course_id = parseInt(req.body.course_id);
+  db.tx(async (t) => {
+    // This transaction will continue iff the student has satisfied all the
+    // required prerequisites.
+
+
+    // There are either no prerequisites, or all have been taken.
+    
+      "INSERT INTO user_courses(username, course_prefix, course_id) VALUES ($1, $2);",
+      [req.session.user.username, course_id]
+    return t.any(all_courses, [req.session.user.username]);
+  })
     .then((courses) => {
-      console.log(courses);
+      //console.info(courses);
       res.render("pages/courses", {
         courses,
-        username: req.session.user.username,
+        message: `Successfully added course ${req.body.course_id}`,
       });
     })
     .catch((err) => {
-      res.render("pages/login", {
+      res.render("pages/courses", {
+        courses: [],
         error: true,
         message: err.message,
       });
-      console.log(err);
     });
 });
 
+app.get("/courses", (req, res) => {
+  const taken = req.query.taken;
+  // Query to list all the courses taken by a student
+
+  db.any(taken ? user_courses : all_courses, [req.session.user.username])
+    .then((courses) => {
+      res.render("pages/courses", {
+        courses,
+        action: req.query.taken ? "delete" : "add",
+      });
+    })
+    .catch((err) => {
+      res.render("pages/courses", {
+        courses: [],
+        error: true,
+        message: err.message,
+      });
+    });
+});
 app.get('/current_gpa', (req, res) =>{ // when "current GPA" selected from menu, renders this page
 
   const course_list = taken_courses
