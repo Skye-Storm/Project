@@ -8,6 +8,8 @@ const bcrypt = require('bcrypt');
 const taken_courses = "SELECT * FROM courses WHERE (course_id, course_prefix) IN (SELECT course_id, course_prefix FROM user_courses WHERE username = $1);";
 const not_taken_courses = "SELECT * FROM courses WHERE (course_id, course_prefix) NOT IN (SELECT course_id, course_prefix FROM user_courses WHERE username = $1);";
 const all_courses = "SELECT * FROM courses";
+const letter_grades = "SELECT * FROM courses INNER JOIN user_courses WHERE user_courses.username = $1);";
+
 
 // database configuration
 const dbConfig = {
