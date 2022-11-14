@@ -20,6 +20,7 @@ CREATE TABLE user_courses(
     course_prefix VARCHAR(4) NOT NULL,
     username VARCHAR(50) NOT NULL,
     grade_complete DECIMAL(2, 1),
+    quality_points FLOAT,
 
     FOREIGN KEY (course_id, course_prefix) REFERENCES courses (course_id, course_prefix),
     FOREIGN KEY (username) REFERENCES users (username)
