@@ -138,6 +138,25 @@ const user_courses = `
   WHERE users.username = $1
   ORDER BY courses.course_id ASC;`;
 
+  app.get("/courses", (req, res) => {
+    const taken = req.query.taken;
+    // Query to list all the courses taken by a student
+  
+    db.any(taken ? user_courses : all_courses, [req.session.user.username])
+      .then((courses) => {
+        res.render("pages/courses", {
+          courses,
+          action: req.query.taken ? "delete" : "add",
+        });
+      })
+      .catch((err) => {
+        res.render("pages/courses", {
+          courses: [],
+          error: true,
+          message: err.message,
+        });
+      });
+  });
 
 app.post("/courses", (req, res) => {
   const course_id = parseInt(req.body.course_id);
@@ -168,15 +187,28 @@ app.post("/courses", (req, res) => {
     });
 });
 
-app.get("/courses", (req, res) => {
-  const taken = req.query.taken;
-  // Query to list all the courses taken by a student
 
-  db.any(taken ? user_courses : all_courses, [req.session.user.username])
-    .then((courses) => {
+
+app.post("/courses/delete", (req, res) => {
+  db.task("delete-course", (task) => {
+    return task.batch([
+      task.none(
+        `DELETE FROM
+            user_courses
+          WHERE
+            username = $1
+            AND course_id = '$2';`,
+        [req.session.user.username, parseInt(req.body.course_id)]
+      ),
+      task.any(user_courses, [req.session.user.username]),
+    ]);
+  })
+    .then(([, courses]) => {
+      console.info(courses);
       res.render("pages/courses", {
         courses,
-        action: req.query.taken ? "delete" : "add",
+        message: `Successfully removed course ${req.body.course_id}`,
+        action: "delete",
       });
     })
     .catch((err) => {
@@ -187,6 +219,7 @@ app.get("/courses", (req, res) => {
       });
     });
 });
+
 app.get('/current_gpa', (req, res) =>{ // when "current GPA" selected from menu, renders this page
 
   const course_list = taken_courses
