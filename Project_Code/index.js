@@ -5,9 +5,12 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
 
-const taken_courses = "SELECT * FROM courses WHERE (course_id, course_prefix) IN (SELECT course_id, course_prefix FROM user_courses WHERE username = $1);";
+const taken_courses = "SELECT * FROM courses INNER JOIN user_courses ON user_courses.course_id = courses.course_id WHERE (courses.course_id, courses.course_prefix) IN (SELECT user_courses.course_id, user_courses.course_prefix FROM user_courses WHERE user_courses.username = $1);";
 const not_taken_courses = "SELECT * FROM courses WHERE (course_id, course_prefix) NOT IN (SELECT course_id, course_prefix FROM user_courses WHERE username = $1);";
 const all_courses = "SELECT * FROM courses";
+// should join user_courses and courses based upon taken courses. The join allows current_gpa.ejs to then update grade_complete and quality_points
+const letter_grades = "SELECT * FROM courses INNER JOIN user_courses WHERE user_courses.username = $1);";
+
 
 // database configuration
 const dbConfig = {
@@ -220,23 +223,52 @@ app.post("/courses/delete", (req, res) => {
     });
 });
 
-app.get('/current_gpa', (req, res) =>{ // when "current GPA" selected from menu, renders this page
+app.get('/current_gpa', async (req, res) =>{ // when "current GPA" selected from menu, renders this page
 
   const course_list = taken_courses
-  db.any(course_list, [req.session.user.username])
-  .then(data => {
-    console.log("Success", data)
-    res.render('pages/current_gpa', {courses: data }); 
+  let num_gpa = `SELECT SUM(quality_points) FROM user_courses AS quality_points_total where username = $1`
+  let den_gpa = "SELECT SUM(credit_hours) FROM courses INNER JOIN user_courses ON user_courses.course_id = courses.course_id WHERE (courses.course_id, courses.course_prefix) IN (SELECT user_courses.course_id, user_courses.course_prefix FROM user_courses WHERE user_courses.username = $1);"
+  let n, d;
+  await db.any(num_gpa, [req.session.user.username])
+  .then(numerator =>{
+    console.log("Numerator" + numerator[0].sum);
+    n = numerator[0].sum;   
+  });
+
+  await db.any(den_gpa, [req.session.user.username])
+    .then( denominator =>{
+      console.log("D")
+      console.log(denominator[0].sum) // typeof tells if it is a string of integers
+      d = denominator[0].sum
+  });
+
+  let fin_gpa = (parseInt(n) / parseInt(d))
+    console.log("FINAL GPA" + parseInt(n) +  parseInt(d))
+    console.log(fin_gpa)
+  await db.any(course_list, [req.session.user.username])
+    .then(data => {
+      console.log("Success", data)
+      data.forEach(async course => {
+        const quality_points = course.grade_complete * course.credit_hours;
+        await db.query(`UPDATE user_courses SET quality_points = ${quality_points} WHERE username = '${req.session.user.username}' AND course_id = ${course.course_id};`)
+      });
+      res.render('pages/current_gpa', {
+        courses: data ,
+        username: req.session.user.username,
+        final_gpa: fin_gpa
+      }); 
   })
   .catch(err =>{
       console.log("Error", err)
       res.render('pages/current_gpa', {courses: " "})
     }
   )
+
+    
   
 });
 
-app.post('/current_gpa', (req, res) =>{
+app.post('/current_gpa', async (req, res) =>{
 
   var letter_grade = req.body.letter_grade; // form must have letter_grade
   const course = req.body.course;
@@ -244,45 +276,45 @@ app.post('/current_gpa', (req, res) =>{
   //$1 is the grade, $2 is the course, $3 is the username. Update the grade in the user_courses table for the given course and username. We need to get the code of the course with the course name and then update the grade in the user_courses table
   const query = "UPDATE user_courses SET grade_complete = $1 WHERE (course_id, course_prefix) = (SELECT course_id, course_prefix FROM courses WHERE course_name = $2) AND username = $3"; 
   if(letter_grade === "A")
-  {    db.any(query,  [4.0, course, req.session.user.username])     .catch(err =>  {  console.log(err);   res.redirect("current_gpa");})  }
+  {    await db.query(query,  [4.0, course, req.session.user.username]);}
 
-  if(letter_grade = "A-")
-  {    db.any (query, [3.7, course, req.session.user.username])    .catch((err) =>{  console.log(err);   res.redirect("current_gpa");})  }
+  else if(letter_grade = "A-")
+  {    await db.query (query, [3.7, course, req.session.user.username]);}
 
-  if(letter_grade = "B+")
-  {    db.any (query, [3.3, course, req.session.user.username])    .catch((err) =>{  console.log(err);   res.redirect("current_gpa");})  }
+  else if(letter_grade = "B+")
+  {    await db.query(query, [3.3, course, req.session.user.username]);}
 
-  if(letter_grade = "B")
-  {    db.any (query, [3.0, course, req.session.user.username])    .catch((err) =>{  console.log(err);   res.redirect("current_gpa");})  }
+  else if(letter_grade = "B")
+  {    await db.query (query, [3.0, course, req.session.user.username]);}
 
-  if(letter_grade = "B-")
-  {    db.any (query, [2.7, course, req.session.user.username])    .catch((err) =>{  console.log(err);   res.redirect("current_gpa");})  }
+  else if(letter_grade = "B-")
+  {    await db.query (query, [2.7, course, req.session.user.username]);}
 
-  if(letter_grade = "C+")
-  {    db.any (query, [2.3, course, req.session.user.username])    .catch((err) =>{  console.log(err);   res.redirect("current_gpa");})  }
+  else if(letter_grade = "C+")
+  {    await db.query (query, [2.3, course, req.session.user.username]);}
 
-  if(letter_grade = "C")
-  {    db.any (query, [2.0, course, req.session.user.username])    .catch((err) =>{  console.log(err);   res.redirect("current_gpa");})  }
+  else if(letter_grade = "C")
+  {    await db.query (query, [2.0, course, req.session.user.username]);}
+ 
+  else if(letter_grade = "C-")
+  {    await db.query (query, [1.7, course, req.session.user.username]);}
 
-  if(letter_grade = "C-")
-  {    db.any (query, [1.7, course, req.session.user.username])    .catch((err) =>{  console.log(err);   res.redirect("current_gpa");})  }
+  else if(letter_grade = "D+")
+  {    await db.query (query, [1.3, course, req.session.user.username]);}
 
-  if(letter_grade = "D+")
-  {    db.any (query, [1.3, course, req.session.user.username])    .catch((err) =>{  console.log(err);   res.redirect("current_gpa");})  }
+  else if(letter_grade = "D")
+  {    await db.query (query, [1.0, course, req.session.user.username]);}
 
-  if(letter_grade = "D")
-  {    db.any (query, [1.0, course, req.session.user.username])    .catch((err) =>{  console.log(err);   res.redirect("current_gpa");})  }
+  else if(letter_grade = "D-")
+  {    await db.query (query, [0.7, course, req.session.user.username]);}
 
-  if(letter_grade = "D-")
-  {    db.any (query, [0.7, course, req.session.user.username])    .catch((err) =>{  console.log(err);   res.redirect("current_gpa");})  }
-
-  if(letter_grade = "F")
-  {    db.any (query, [0.0, course, req.session.user.username])    .catch((err) =>{  console.log(err);   res.redirect("current_gpa");})  }
+  else if(letter_grade = "F")
+  {    await db.query (query, [0.0, course, req.session.user.username]);}
   else
   {
     res.render('pages/current_gpa'); //add error message about improper letter choice
   }
-  res.render('pages/current_gpa', {courses: ""}); 
+  res.redirect('/current_gpa'); 
 })
 
 
