@@ -200,7 +200,10 @@ app.get('/current_gpa', (req, res) =>{ // when "current GPA" selected from menu,
       const quality_points = course.grade_complete * course.credit_hours;
       await db.query(`UPDATE user_courses SET quality_points = ${quality_points} WHERE username = '${req.session.user.username}' AND course_id = ${course.course_id};`)
     });
-    res.render('pages/current_gpa', {courses: data }); 
+    res.render('pages/current_gpa', {
+      courses: data ,
+      username: req.session.user.username
+    }); 
   })
   .catch(err =>{
       console.log("Error", err)
