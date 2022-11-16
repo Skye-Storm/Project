@@ -1,51 +1,37 @@
-<%- include ('../partials/header') %> <%- include ('../partials/menu') %>
-<main>
-  <div class="container">
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">Course ID</th>
-          <th scope="col">Course Name</th>
-          <th scope="col">Credit Hours</th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
+<%- include ('../partials/header') %>
+<%- include ('../partials/menu') %>
 
-<% for(let i = 0; i < courses.length; i++) {%>
-<tr>
-<td scope ="col"><%= courses[i].course_id %></td>
-<td scope ="col"><%= courses[i].course_name %></td>
-<td scope ="col"><%= courses[i].credit_hours %></td>
-<% if(courses[i].taken && locals.action === "delete") { %>
-<td>
-<form method='POST' action='/courses/delete'>
-<input value="<%=courses[i].course_id%>" name='course_id' type = 'hidden'></input>
-<button type='submit' class="btn btn-outline-danger">Delete</button>
-</form>
-</td>
-<% } else if(courses[i].taken) { %>
-            <td><button disabled>Add</button></td>
-          <% } else { %>
-            <td>
-              <form method = 'POST' action = '/courses'>
-                <input value = "<%= courses[i].course_id%>" name = 'course_id' type = 'hidden'></input>
-                <button type = 'submit' class="btn btn-outline-success">Add</button>
-              </form>
-            </td>
-                <% }%>
+<main>
+    
+  <div class="container">
+    <br>
+    <h1>Hello, <%= username %></h1>
+    <br>
+    <table class="table">
+      <tr>
+        <th>COURSE ID</th>
+        <th>COURSE NAME</th>
+        <th>CREDIT HOURS</th>
+        <th>ACTION</th>
+      </tr>
+      <% for(var i = 0; i < courses.length; i++) { %>
+        <tr>
+          <td><%= courses[i].course_prefix + courses[i].course_id %></td>
+          <td><%= courses[i].course_name %></td>
+          <td><%= courses[i].credit_hours %></td>
+          <!-- add course button -->
+          <td>
+            <form action="/courses/add" method="POST">
+            <input type="hidden" name="course_info[]" value="<%= courses[i].course_prefix %>">
+            <input type="hidden" name="course_info[]" value="<%= courses[i].course_id %>">
+            <button type="submit" class="btn btn-outline-success">ADD</button>
+            </form>
+          </td>
         </tr>
-        <% }%>
-      </tbody>
-    </table>
+      <% } %>
+    </table>    
   </div>
-<% if (locals.message) { %>
-<div
-  class="alert alert-<%- locals.error ? 'danger' : 'success' %>"
-  role="alert"
->
-  <%= message %>
-</div>
-<% } %>
+
 </main>
+
 <%- include ('../partials/footer') %>
