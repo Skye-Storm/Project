@@ -28,7 +28,7 @@
             <td><button disabled>Add</button></td>
           <% } else { %>
             <td>
-              <form method = 'POST' action = '/courses'>
+              <form method = 'POST' action = '/courses/add'>
                 <input value = "<%= courses[i].course_id%>" name = 'course_id' type = 'hidden'></input>
                 <button type = 'submit' class="btn btn-outline-success">Add</button>
               </form>

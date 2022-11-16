@@ -141,32 +141,13 @@ const user_courses = `
   WHERE users.username = $1
   ORDER BY courses.course_id ASC;`;
 
-  app.get("/courses", (req, res) => {
-    const taken = req.query.taken;
-    // Query to list all the courses taken by a student
-  
-    db.any(taken ? user_courses : all_courses, [req.session.user.username])
-      .then((courses) => {
-        res.render("pages/courses", {
-          courses,
-          action: req.query.taken ? "delete" : "add",
-        });
-      })
-      .catch((err) => {
-        res.render("pages/courses", {
-          courses: [],
-          error: true,
-          message: err.message,
-        });
-      });
-  });
-
-app.post("/courses", (req, res) => {
+ /*
+app.post("/courses/add", (req, res) => {
   const course_id = parseInt(req.body.course_id);
   db.tx(async (t) => {
     // This transaction will continue iff the student has satisfied all the
     // required prerequisites.
-
+    
 
     // There are either no prerequisites, or all have been taken.
     
@@ -175,7 +156,39 @@ app.post("/courses", (req, res) => {
     return t.any(all_courses, [req.session.user.username]);
   })
     .then((courses) => {
-      //console.info(courses);
+      //console.info(courses);  
+      res.render("pages/courses", {
+        courses,
+        message: `Successfully added course ${req.body.course_id}`,
+      });
+    })
+    .catch((err) => {
+      res.render("pages/courses", {
+        courses: [],
+        error: true,
+        message: err.message,
+      });
+    });
+});
+*/
+
+app.post("/courses/add", (req, res) => {
+  const course_id = parseInt(req.body.course_id);
+  const course_prefix = parseInt(req.body.course_prefix);
+  const query = "INSERT INTO user_courses(username, course_prefix, course_id) VALUES ($1, $2, $3);";
+  db.any (query, [req.session.user.username, course_prefix, course_id])
+    // This transaction will continue iff the student has satisfied all the
+    // required prerequisites.
+    
+
+    // There are either no prerequisites, or all have been taken.
+    
+      
+      
+    /*return t.any(all_courses, [req.session.user.username]);
+  })*/
+    .then((courses) => {
+      //console.info(courses);  
       res.render("pages/courses", {
         courses,
         message: `Successfully added course ${req.body.course_id}`,
@@ -190,7 +203,25 @@ app.post("/courses", (req, res) => {
     });
 });
 
+app.get("/courses", (req, res) => {
+  const taken = req.query.taken;
+  // Query to list all the courses taken by a student
 
+  db.any(taken ? user_courses : all_courses, [req.session.user.username])
+    .then((courses) => {
+      res.render("pages/courses", {
+        courses,
+        action: req.query.taken ? "delete" : "add",
+      });
+    })
+    .catch((err) => {
+      res.render("pages/courses", {
+        courses: [],
+        error: true,
+        message: err.message,
+      });
+    });
+});
 
 app.post("/courses/delete", (req, res) => {
   db.task("delete-course", (task) => {
