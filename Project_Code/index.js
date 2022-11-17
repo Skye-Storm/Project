@@ -265,37 +265,37 @@ app.post('/current_gpa', async (req, res) =>{
   if(letter_grade === "A")
   {    await db.query(query,  [4.0, course, req.session.user.username]);}
 
-  else if(letter_grade = "A-")
+  else if(letter_grade === "A-")
   {    await db.query (query, [3.7, course, req.session.user.username]);}
 
-  else if(letter_grade = "B+")
+  else if(letter_grade === "B+")
   {    await db.query(query, [3.3, course, req.session.user.username]);}
 
-  else if(letter_grade = "B")
+  else if(letter_grade === "B")
   {    await db.query (query, [3.0, course, req.session.user.username]);}
 
-  else if(letter_grade = "B-")
+  else if(letter_grade === "B-")
   {    await db.query (query, [2.7, course, req.session.user.username]);}
 
-  else if(letter_grade = "C+")
+  else if(letter_grade === "C+")
   {    await db.query (query, [2.3, course, req.session.user.username]);}
 
-  else if(letter_grade = "C")
+  else if(letter_grade === "C")
   {    await db.query (query, [2.0, course, req.session.user.username]);}
  
-  else if(letter_grade = "C-")
+  else if(letter_grade === "C-")
   {    await db.query (query, [1.7, course, req.session.user.username]);}
 
-  else if(letter_grade = "D+")
+  else if(letter_grade === "D+")
   {    await db.query (query, [1.3, course, req.session.user.username]);}
 
-  else if(letter_grade = "D")
+  else if(letter_grade === "D")
   {    await db.query (query, [1.0, course, req.session.user.username]);}
 
-  else if(letter_grade = "D-")
+  else if(letter_grade === "D-")
   {    await db.query (query, [0.7, course, req.session.user.username]);}
 
-  else if(letter_grade = "F")
+  else if(letter_grade === "F")
   {    await db.query (query, [0.0, course, req.session.user.username]);}
   else
   {
