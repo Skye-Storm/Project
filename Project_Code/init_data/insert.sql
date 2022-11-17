@@ -1006,5 +1006,6 @@ INSERT INTO courses (course_prefix, course_id, course_name, credit_hours) VALUES
 ('MCEN', 6184, 'Structure and Properties of Polymers', 3),
 ('MCEN', 7221, 'Turbulence', 3);
 
-INSERT INTO user_courses (username, course_prefix, course_id) VALUES 
-('asd', 'CSCI', 1000);
+INSERT INTO user_courses (username, course_prefix, course_id, grade_complete) VALUES 
+('asd', 'CSCI', 1000, 4.0),
+('asd', 'CSCI', 1300, 3.0);
