@@ -85,12 +85,14 @@ app.post('/login', async (req, res) =>{
     } else {
       res.render('pages/login', {
         error: 'Invalid username or password',
+	message: `Wrong password, please try again`,
       });
     }
   }
   else {
     res.render('pages/login', {
       error: 'Invalid username or password',
+      message: `Invalid username, please try again`,
     });
   }
 
@@ -113,19 +115,11 @@ db.any (query, [user, hash])
    })
    .catch((err) => {
       console.log(err);
-      res.redirect("/register");
+      res.render("pages/register", {
+	error: 'Username exists',
+	message: `Username already exists, please try another one`,});
     });
 });
-
-// Authentication middleware.
-const auth = (req, res, next) => {
-  if (!req.session.user) {
-    return res.redirect("/login");
-  }
-  next();
-};
-
-app.use(auth);
 
 
 app.get("/courses", (req, res) => {
