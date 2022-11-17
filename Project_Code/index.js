@@ -162,6 +162,36 @@ app.get("/my_courses", (req, res) => {
     });
 });
 
+app.post("/courses/delete", (req, res) => {
+  const course_prefix = req.body.course_info[0];
+  const course_id = req.body.course_info[1];
+  const query = "DELETE FROM user_courses WHERE course_id = $1 AND course_prefix = $2 AND username = $3"; 
+  db.any(query, [course_id, course_prefix, req.session.user.username])
+  .then((data) => { 
+    res.redirect("/my_courses");
+  })
+  .catch((err) => { 
+    console.log(err);
+  res.redirect("/my_courses");
+  });
+});
+
+app.post('/courses/add', (req, res)=>{
+  const course_prefix = req.body.course_info[0];
+  const course_id = req.body.course_info[1];
+  const query = "INSERT INTO user_courses (course_id, course_prefix, username) VALUES ($1, $2, $3)";
+  db.any(query, [course_id, course_prefix, req.session.user.username])
+  .then((data)=>{
+    res.redirect("/courses");
+  })
+  .catch((err) =>{
+    console.log(err);
+    res.redirect("/courses");
+  });
+});
+
+
+
 app.get('/current_gpa', async (req, res) =>{ // when "current GPA" selected from menu, renders this page
 
   const course_list = taken_courses
