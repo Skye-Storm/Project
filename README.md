@@ -11,3 +11,12 @@ For students, Who want to calculate their GPA's and store said information for l
 
 
 PRINT OPTION TO PRINT GRADES AND SCORES
+
+
+Brief Application description
+Contributors - In this case, it will be the team Members
+Technology Stack used for the project
+Prerequisites to run the application - Any software that needs to be installed to run the application
+Instructions on how to run the application locally.
+How to run the tests, if applicable
+Link to the deployed application, if applicable
