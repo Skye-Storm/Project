@@ -190,7 +190,25 @@ app.post('/courses/add', (req, res)=>{
   });
 });
 
+app.post('/courses/addnew', (req, res) =>
+{
+  var course_prefix = req.body.prefix;
+  var course_id = req.body.id;
+  var course_name = req.body.name;
+  var credit_hours = req.body.hours;
 
+  const query = "INSERT INTO courses (course_id, course_prefix, course_name, credit_hours) VALUES ($1, $2, $3, $4)";
+  db.any(query, [course_id, course_prefix, course_name, credit_hours])
+  .then((data)=>{
+    res.redirect("/courses");
+  })
+  .catch((err) =>{
+    console.log(err);
+    res.redirect("/courses");
+  });
+
+
+});
 
 app.get('/current_gpa', async (req, res) =>{ // when "current GPA" selected from menu, renders this page
 
