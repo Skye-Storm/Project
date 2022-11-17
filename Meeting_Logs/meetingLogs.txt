@@ -23,6 +23,7 @@ FOR THE WEEK
 Each Person
 Fitz: worked on creating a database of all engineering courses, and worked on creating the projected GPA page. For the next week, I will finish up the projected GPA page and possibly move to print PDF functionality. Commits: 4 this week (dealing with proj GPA)
 Trevor: Logout button complete, worked on register and login API. Register is complete and working. Login has a bug when entering in a known user with the wrong password. For the next week I will be working on fixing that bug (And any others that come up with logging in/registering) and I will be helping with linking classes to users.
+Connor: Helped implement the database, changed some css of the login page, and got the courses page formatted and displaying the user's courses. For next week I'll help in the adding/deleting courses through the courses page, and help link it to the gpa calculator.
 Kailen: Commit 1 - Added quality points to user_courses (necessary to calculate GPA). Commit 2 - current_gpa.ejs now properly changes letter grade on the database.
 	Commit 3 - current_gpa.ejs now updates quality_points in db.		      Commit 4 - current_gpa.ejs shows username at top.
 	Commit 5 - 
