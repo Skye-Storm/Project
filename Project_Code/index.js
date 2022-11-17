@@ -298,5 +298,7 @@ app.post('/current_gpa', async (req, res) =>{
 
 app.get("/logout", (req, res) => {
   req.session.destroy();
-  res.redirect("/login");
+  res.render('pages/login', {
+	message: `Successfully logged out!`,
+      });
 });
