@@ -5,8 +5,8 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
 
-const taken_courses = "SELECT * FROM courses INNER JOIN user_courses ON user_courses.course_id = courses.course_id WHERE (courses.course_id, courses.course_prefix) IN (SELECT user_courses.course_id, user_courses.course_prefix FROM user_courses WHERE user_courses.username = $1);";
 const not_taken_courses = "SELECT * FROM courses WHERE (course_id, course_prefix) NOT IN (SELECT course_id, course_prefix FROM user_courses WHERE username = $1);";
+const taken_courses = "SELECT * FROM courses INNER JOIN user_courses ON user_courses.course_id = courses.course_id AND user_courses.course_prefix = courses.course_prefix WHERE username = $1;";
 const all_courses = "SELECT * FROM courses";
 // should join user_courses and courses based upon taken courses. The join allows current_gpa.ejs to then update grade_complete and quality_points
 const letter_grades = "SELECT * FROM courses INNER JOIN user_courses WHERE user_courses.username = $1);";
@@ -214,7 +214,7 @@ app.get('/current_gpa', async (req, res) =>{ // when "current GPA" selected from
 
   const course_list = taken_courses
   let num_gpa = `SELECT SUM(quality_points) FROM user_courses AS quality_points_total where username = $1`
-  let den_gpa = "SELECT SUM(credit_hours) FROM courses INNER JOIN user_courses ON user_courses.course_id = courses.course_id WHERE (courses.course_id, courses.course_prefix) IN (SELECT user_courses.course_id, user_courses.course_prefix FROM user_courses WHERE user_courses.username = $1);"
+  let den_gpa = `SELECT SUM(credit_hours) FROM courses INNER JOIN user_courses ON user_courses.course_id = courses.course_id AND user_courses.course_prefix = courses.course_prefix WHERE username = $1;`
   let n, d;
   await db.any(num_gpa, [req.session.user.username])
   .then(numerator =>{
