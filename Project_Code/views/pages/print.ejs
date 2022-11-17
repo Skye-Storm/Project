@@ -1,0 +1,98 @@
+<%- include ('../partials/header') %>
+<%- include ('../partials/menu') %>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  
+}
+
+/* Style the header */
+header {
+  text-align: center;
+}
+
+/* Container for flexboxes */
+section {
+  display: -webkit-flex;
+  display: flex;
+}
+
+/* Style the navigation menu */
+nav {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  background: #ccc;
+  padding: 20px;
+}
+
+/* Style the list inside the menu */
+nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+/* Style the content */
+table {
+  -webkit-flex: 3;
+  -ms-flex: 3;
+  flex: 3;
+  padding: 10px;
+}
+
+/* Style the footer */
+footer {
+  padding: 10px;
+  text-align: center;
+}
+
+/* Responsive layout - makes the menu and the content (inside the section) sit on top of each other instead of next to each other */
+@media (max-width: 600px) {
+  section {
+    -webkit-flex-direction: column;
+    flex-direction: column;
+  }
+}
+</style>
+</head>
+<body>
+    <br><br>
+<header>
+  <h3><%= username %> 's Current GPA : <%= final_gpa %> </h3>
+  <button onclick="window.print()">Print This Page</button>
+</header>
+
+<section>
+  
+  <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Course Name</th>
+          <th scope="col">Credit Hours</th>
+          <th scope="col">Grade Point Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(let i = 0; i < courses.length; i++){%>
+        <tr>
+          <td scope ="col"> <%= courses[i].course_name %></td> 
+          <td scope ="col"><%= courses[i].credit_hours %></td> 
+          <td scope ="col"><%= courses[i].grade_complete %></td>
+        </tr>
+        <% } %>
+      </tbody>
+
+</section>
+
+
+
+</body>
+</html>
+
+
+
+<%- include ('../partials/footer') %>
