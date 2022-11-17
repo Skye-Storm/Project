@@ -24,6 +24,8 @@ FOR THE WEEK
 We will do meeting during recitation
 Need to go thru rubric and make sure we have everything
 make sure to book presentation slot
+need to have home page
+
 
 Each Person
 Fitz: worked on creating a database of all engineering courses, and worked on creating the projected GPA page. For the next week, I will finish up the projected GPA page and possibly move to print PDF functionality. This week, I made the projected class populate the table and am working on integrating this new class into the GPA calculation. Commits: 4 this week (dealing with proj GPA)
