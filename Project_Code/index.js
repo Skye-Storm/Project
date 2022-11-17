@@ -291,10 +291,7 @@ app.post('/current_gpa', async (req, res) =>{
 
   else if(letter_grade === "F")
   {    await db.query (query, [0.0, course, req.session.user.username]);}
-  else
-  {
-    res.render('pages/current_gpa'); //add error message about improper letter choice
-  }
+	
   res.redirect('/current_gpa'); 
 })
 
