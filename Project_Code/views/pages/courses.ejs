@@ -14,6 +14,20 @@
         <th>CREDIT HOURS</th>
         <th>ACTION</th>
       </tr>
+      <tr>
+        
+          <form action="/courses/addnew" method="POST">
+            <td><input type = "text" id="prefix" name="prefix"><input type="number" id="id" name="id"></td>
+        <td><input type="text" id="name" name="name"></td>
+        <td><input type="number" id ="hours" name="hours"></td>
+          <input type="hidden" name="course_infonew[]">
+          <input type="hidden" name="course_infonew[]">
+          <input type="hidden" name="course_infonew[]">
+          <input type="hidden" name="course_infonew[]">
+          <button type="submit" class="btn btn-outline-success" value ="save">ADD</button>
+          </form>
+        </td>
+      </tr>
       <% for(var i = 0; i < courses.length; i++) { %>
         <tr>
           <td><%= courses[i].course_prefix + courses[i].course_id %></td>
