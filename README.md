@@ -1,22 +1,24 @@
 # Project
 Exploding Unit GPA Calculator
 
-*A short (2-3 paragraphs) overview description of the application. Provide enough information to explain what functionality and value your product will provide to users of your application. This should help you to define the scope of your project*
-
-Our project will allow students to login and store their courses, and then submit their letter grade into a course slot. This will then convert and calculate their current GPA. 
-
-
 VISION STATEMENT
 For students, Who want to calculate their GPA's and store said information for later ease of access. The "Exploding Unit's GPA Calculator" is a GPA Calculator that calculates your GPA and stores relevant classes and scores for ease access. Unlike "https://gpacalculator.net/college-gpa-calculator/" , our product does not requires users to re-input their information when reloading the page subsequently storing their scores and courses into a database.
+Brief Application description:
+
+Contributors - Kailen Sammons, Trevor ..., Fitz ..., Ian Wong, William ...
+
+Technology Stack used for the project -
+  OS - Windows, IOS, Linux
+  Languages - HTML & Javascript
+  Data Storage - PostgreSQL
+  Frontend Framework - Bootstrap
+
+Prerequisites to run the application - 
+  Web Browser (Google Chrome, Firefox, Safari, Windows Edge)
 
 
-PRINT OPTION TO PRINT GRADES AND SCORES
+Instructions on how to run the application locally -
+  Upon accessing the GPA Calculator, the user must register and then login. The user can add classes from the add classes tab, review their classes on the my courses tab, or update their grade and calculate their GPA on the Current GPA Calculator. The classes a user adds to their courses will be saved in the database to store for future use.
 
 
-Brief Application description
-Contributors - In this case, it will be the team Members
-Technology Stack used for the project
-Prerequisites to run the application - Any software that needs to be installed to run the application
-Instructions on how to run the application locally.
-How to run the tests, if applicable
-Link to the deployed application, if applicable
+Link to the deployed application, if applicable - (HOST TBD BY COURSE ADMINISTRATORS)
