@@ -6,9 +6,6 @@
   box-sizing: border-box;
 }
 
-body {
-  
-}
 
 /* Style the header */
 header {
@@ -27,21 +24,19 @@ nav {
   -ms-flex: 1;
   flex: 1;
   background: #ccc;
-  padding: 20px;
 }
 
 /* Style the list inside the menu */
 nav ul {
   list-style-type: none;
-  padding: 0;
 }
 
 /* Style the content */
 table {
+  background-color: rgba(255, 255, 128, .5);
   -webkit-flex: 3;
   -ms-flex: 3;
   flex: 3;
-  padding: 10px;
 }
 
 /* Style the footer */
@@ -62,7 +57,7 @@ footer {
 <body>
     <br><br>
 <header>
-  <h3><%= username %> 's Current GPA : <%= final_gpa %> </h3>
+  <h3 style="font-family:verdana;"><%= username %> 's Current GPA : <%= final_gpa %> </h3>
   <button onclick="window.print()">Print This Page</button>
 </header>
 

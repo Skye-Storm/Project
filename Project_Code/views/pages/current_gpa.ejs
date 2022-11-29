@@ -6,8 +6,6 @@
   box-sizing: border-box;
 }
 
-body {
-}
 
 /* Style the header */
 header {
@@ -37,6 +35,7 @@ nav ul {
 
 /* Style the content */
 table {
+  background-color: rgba(255, 255, 128, .5);
   -webkit-flex: 3;
   -ms-flex: 3;
   flex: 3;
@@ -61,7 +60,7 @@ footer {
 <body>
 
 <header>
-  <h3><%= username %> 's Current GPA : <%= final_gpa %> </h3>
+  <h3 style="font-family:verdana;"><%= username %> 's Current GPA : <%= final_gpa %> </h3>
 </header>
 
 <section>
@@ -101,7 +100,7 @@ footer {
         <tr>
           <th scope="col">Course Name</th>
           <th scope="col">Credit Hours</th>
-          <th scope="col">Letter Grade</th>
+          <th scope="col">Grade Point Value</th>
         </tr>
       </thead>
       <tbody>
