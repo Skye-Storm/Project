@@ -208,44 +208,27 @@ app.post('/courses/addnew', (req, res) =>
 
 });
 
-//CREATE A FUNCTION THAT UPDATES QUALITY POINTS AND THEN CALL IT IN THE 
-  // myFunction.quality_points(  =>{
-
-  // })
-
 
 app.get('/current_gpa', async (req, res) =>{ // when "current GPA" selected from menu, renders this page
 
   const course_list = taken_courses
   let num_gpa = `SELECT SUM(quality_points) FROM user_courses AS quality_points_total where username = $1`
   let den_gpa = `SELECT SUM(credit_hours) FROM courses INNER JOIN user_courses ON user_courses.course_id = courses.course_id AND user_courses.course_prefix = courses.course_prefix WHERE username = $1;`
-  let n, d;
-  // await db.any(num_gpa, [req.session.user.username])
-  // .then(numerator =>{
-  //   console.log("Numerator " + numerator[0].sum);
-  //   n = numerator[0].sum;   
-  // });
-
-  // await db.any(den_gpa, [req.session.user.username])
-  //   .then( denominator =>{
-  //     console.log("Denominator " + denominator[0].sum)
-  //     d = denominator[0].sum
-  // });
-
-  // let fin_gpa = (parseInt(n) / parseInt(d))
-  //   console.log("FINAL GPA" + parseInt(n) +  parseInt(d))
-  //   console.log(fin_gpa)
-
-
+  let n, d = 0;
     
   await db.any(course_list, [req.session.user.username])
     .then(async data => {
       var resultArr = []
+      var numerator = 0;
       data.forEach(async course => {
         const quality_points = course.grade_complete * course.credit_hours;
         const result = await db.query(`UPDATE user_courses SET quality_points = ${quality_points} WHERE username = '${req.session.user.username}' AND course_id = ${course.course_id} RETURNING *;`)
         //const updated = await db.query(course_list, [req.session.user.username])
         resultArr.push(result[0])
+        //console.log(typeof(result[0].quality_points), result[0].quality_points)
+        numerator += result[0].quality_points;
+        console.log(numerator)
+        //n += result.quality_points;
       });
       await db.any(num_gpa, [req.session.user.username])
       .then(numerator =>{
@@ -260,7 +243,7 @@ app.get('/current_gpa', async (req, res) =>{ // when "current GPA" selected from
       });
       console.log(resultArr)
       let fin_gpa = (parseInt(n) / parseInt(d))
-      console.log("FINAL GPA" + parseInt(n) +  parseInt(d))
+      console.log("FINAL GPA " + parseInt(n) + " " +  parseInt(d))
       console.log(fin_gpa)
       res.render('pages/current_gpa', {
         courses: data ,
@@ -332,30 +315,36 @@ app.get('/print', async (req, res) =>{ // when "current GPA" selected from menu,
   const course_list = taken_courses
   let num_gpa = `SELECT SUM(quality_points) FROM user_courses AS quality_points_total where username = $1`
   let den_gpa = `SELECT SUM(credit_hours) FROM courses INNER JOIN user_courses ON user_courses.course_id = courses.course_id AND user_courses.course_prefix = courses.course_prefix WHERE username = $1;`
-  let n, d;
-  await db.any(num_gpa, [req.session.user.username])
-  .then(numerator =>{
-    console.log("Numerator" + numerator[0].sum);
-    n = numerator[0].sum;   
-  });
-
-  await db.any(den_gpa, [req.session.user.username])
-    .then( denominator =>{
-      console.log("D")
-      console.log(denominator[0].sum) // typeof tells if it is a string of integers
-      d = denominator[0].sum
-  });
-
-  let fin_gpa = (parseInt(n) / parseInt(d))
-    console.log("FINAL GPA" + parseInt(n) +  parseInt(d))
-    console.log(fin_gpa)
+  let n, d = 0;
+    
   await db.any(course_list, [req.session.user.username])
-    .then(data => {
-      console.log("Success", data)
+    .then(async data => {
+      var resultArr = []
+      var numerator = 0;
       data.forEach(async course => {
         const quality_points = course.grade_complete * course.credit_hours;
-        await db.query(`UPDATE user_courses SET quality_points = ${quality_points} WHERE username = '${req.session.user.username}' AND course_id = ${course.course_id};`)
+        const result = await db.query(`UPDATE user_courses SET quality_points = ${quality_points} WHERE username = '${req.session.user.username}' AND course_id = ${course.course_id} RETURNING *;`)
+        resultArr.push(result[0])
+        console.log(typeof(result[0].quality_points), result[0].quality_points)
+        numerator += result[0].quality_points;
+        console.log(numerator)
+        n += result.quality_points;
       });
+      await db.any(num_gpa, [req.session.user.username])
+      .then(numerator =>{
+        console.log("Numerator " + numerator[0].sum);
+        n = numerator[0].sum;   
+      });
+
+      await db.any(den_gpa, [req.session.user.username])
+        .then( denominator =>{
+        console.log("Denominator " + denominator[0].sum)
+        d = denominator[0].sum
+      });
+      console.log(resultArr)
+      let fin_gpa = (parseInt(n) / parseInt(d))
+      console.log("FINAL GPA " + parseInt(n) + " " +  parseInt(d))
+      console.log(fin_gpa)
       res.render('pages/print', {
         courses: data ,
         username: req.session.user.username,
