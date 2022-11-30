@@ -242,7 +242,8 @@ app.get('/current_gpa', async (req, res) =>{ // when "current GPA" selected from
         d = denominator[0].sum
       });
       console.log(resultArr)
-      let fin_gpa = (parseInt(n) / parseInt(d))
+      let start_gpa = (parseInt(n) / parseInt(d))
+      let fin_gpa = start_gpa.toFixed(2)
       console.log("FINAL GPA " + parseInt(n) + " " +  parseInt(d))
       console.log(fin_gpa)
       res.render('pages/current_gpa', {
@@ -342,7 +343,8 @@ app.get('/print', async (req, res) =>{ // when "current GPA" selected from menu,
         d = denominator[0].sum
       });
       console.log(resultArr)
-      let fin_gpa = (parseInt(n) / parseInt(d))
+      let start_gpa = (parseInt(n) / parseInt(d))
+      let fin_gpa = start_gpa.toFixed(2)
       console.log("FINAL GPA " + parseInt(n) + " " +  parseInt(d))
       console.log(fin_gpa)
       res.render('pages/print', {
